@@ -7,8 +7,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+    @Test public void testShoppingListAddItem() 
+    {
+        ShoppingList shoppingList = new ShoppingList();
+        assertEquals("New shopping list should have size of 0", 0, shoppingList.size());
+
+        shoppingList.addItem("Test Title", "Test Body");
+        assertEquals("New shopping list should have size of 1", 1, shoppingList.size());
     }
 }

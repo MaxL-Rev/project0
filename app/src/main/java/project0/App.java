@@ -36,9 +36,11 @@ public class App
                     break;
 
                 case 4:
+                    program.deleteItem(shoppingList, input);
                     break;
 
                 case 5:
+                    program.checkOffItem(shoppingList, input);
                     break;
 
                 case 6:
@@ -77,7 +79,7 @@ public class App
             System.out.println("2: Edit title of an item");
             System.out.println("3: Edit body of an item");
             System.out.println("4: Delete an item");
-            System.out.println("5: Check an item");
+            System.out.println("5: Check off an item");
             System.out.println("6: Quit");
             System.out.print("What did you want to do?(1-6): ");
 
@@ -143,5 +145,19 @@ public class App
         newBody = input.nextLine();
 
         shoppingList.editItemBody(index-1, newBody);
+    }
+
+    private void deleteItem(ShoppingList shoppingList, Scanner input)
+    {
+        int index = getIndexFromUser(input, shoppingList.size());
+
+        shoppingList.deleteItem(index-1);
+    }
+
+    private void checkOffItem(ShoppingList shoppingList, Scanner input)
+    {
+        int index = getIndexFromUser(input, shoppingList.size());
+
+        shoppingList.checkItem(index-1);
     }
 }

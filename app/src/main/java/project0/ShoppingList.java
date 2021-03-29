@@ -16,7 +16,7 @@ public class ShoppingList
 
     public void addItem(String title, String body)
     {
-        shoppingList.add(new ListItem(title, body));
+        shoppingList.add(checkedIndex, new ListItem(title, body));
         checkedIndex++;
     }
 

@@ -84,10 +84,10 @@ public class App
             System.out.print("What did you want to do?(1-6): ");
 
             menuSelection = input.nextInt();
+            input.nextLine();
         }while(menuSelection < 1 || menuSelection > 6);
 
         System.out.println();
-        input.nextLine();
         return menuSelection;
     }
 

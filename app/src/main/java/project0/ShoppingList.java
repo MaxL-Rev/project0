@@ -33,7 +33,10 @@ public class ShoppingList
     public void deleteItem(int index)
     {
         shoppingList.remove(index);
-        checkedIndex--;
+        if(index < checkedIndex)
+        {
+            checkedIndex--;
+        }
     }
 
     public boolean isEmpty()
@@ -55,8 +58,6 @@ public class ShoppingList
     {
         shoppingList.add(shoppingList.get(index));
         deleteItem(index);
-
-        checkedIndex--;
     }
 
     public void displayList()

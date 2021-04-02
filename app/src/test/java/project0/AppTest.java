@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class AppTest {
     @Test public void testShoppingListAddItem() 
     {
-        ShoppingList shoppingList = new ShoppingList();
+        ShoppingList shoppingList = new ShoppingList("Testing List");
         assertEquals("New shopping list should have size of 0", 0, shoppingList.size());
 
         shoppingList.addItem("Test Title", "Test Body");

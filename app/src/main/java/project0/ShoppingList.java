@@ -1,18 +1,76 @@
 package project0;
 
+import java.sql.Array;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingList
 {
+    private String listName;
     private List<ListItem> shoppingList;
     private int checkedIndex;
 
-    public ShoppingList()
+    public ShoppingList(String listName)
     {
+        this.listName = listName;
         shoppingList = new ArrayList<>();
         checkedIndex = 0;
     }
+
+    public ShoppingList(String listName, Array titles, Array bodies, int checkedIndex)
+    {
+        this.listName = listName;
+        shoppingList = new ArrayList<>();
+        this.checkedIndex = checkedIndex;
+
+        String[] titlesStr = {};
+        try {
+            titlesStr = (String[])titles.getArray();
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+        String[] bodiesStr = {};
+        try {
+            bodiesStr = (String[])bodies.getArray();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < titlesStr.length; i++)
+        {
+            shoppingList.add(new ListItem(titlesStr[i], bodiesStr[i]));
+        }
+    }
+
+    public String getListName()
+    {
+        return listName;
+    }
+
+    public List<String> getTitles()
+    {
+        List<String> titles = new ArrayList<>();
+
+        for(ListItem item : shoppingList)
+        {
+            titles.add(item.getTitle());
+        }
+
+        return titles;
+    } 
+
+    public List<String> getBodies()
+    {
+        List<String> bodies = new ArrayList<>();
+
+        for(ListItem item : shoppingList)
+        {
+            bodies.add(item.getBody());
+        }
+
+        return bodies;
+    } 
 
     public void addItem(String title, String body)
     {
@@ -64,9 +122,8 @@ public class ShoppingList
     {
         for(int i = 0; i < size(); i++)
         {
-            StringBuilder line = new StringBuilder("");
+            StringBuilder line = new StringBuilder();
             
-            //System.out.print((i+1) + "- ");
             line.append((i+1) + "- ");
             if(i < checkedIndex)
             {
@@ -76,29 +133,37 @@ public class ShoppingList
             {
                 line.append("[x] ");
             }
-            line.append(shoppingList.get(i).getTitle() + ": " + shoppingList.get(i).getBody());
-            //System.out.println(shoppingList.get(i).getTitle() + ": " + shoppingList.get(i).getBody());
+            line.append(shoppingList.get(i));
+
             System.out.println(line);
         }
     }
 
-    /*
-    public void displayActive()
+    @Override
+    public String toString()
     {
-        for(int i = 0; i < checkedIndex; i++)
-        {
-            System.out.println(i + ": " + shoppingList.get(i));
-        }
-    }
+        StringBuilder stringRepresentation = new StringBuilder();
 
-    public void displayChecked()
-    {
-        for(int i = checkedIndex; i < shoppingList.size(); i++)
+        for(int i = 0; i < size(); i++)
         {
-            System.out.println((i - checkedIndex + 1) + ": " + shoppingList.get(i));
+            StringBuilder line = new StringBuilder();
+            
+            line.append((i+1) + "- ");
+            if(i < checkedIndex)
+            {
+                line.append("[ ] ");
+            }
+            else
+            {
+                line.append("[x] ");
+            }
+            line.append(shoppingList.get(i));
+
+            stringRepresentation.append(line);
         }
+
+        return stringRepresentation.toString();
     }
-    */
     
     private class ListItem
     {

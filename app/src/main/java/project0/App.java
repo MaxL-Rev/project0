@@ -12,9 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 public class App 
 {
+    private static final Logger log = LogManager.getLogger(App.class.getName());
     public static void main(String[] args) 
     {
-        Logger log = LogManager.getLogger(App.class.getName());
         String url = "jdbc:postgresql://localhost:5432/project0";
         String username = "project0";
         String password = "password";
@@ -38,7 +38,7 @@ public class App
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 }

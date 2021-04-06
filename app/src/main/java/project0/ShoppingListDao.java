@@ -8,16 +8,30 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Data Access Object for interacting between any Shopping Lists and the DB
+ */
 public class ShoppingListDao
 {
     private Connection connection;
 
+    /**
+     * Gives the DAO a connection to the DB
+     * @param connection
+     */
     public ShoppingListDao(Connection connection)
     {
         this.connection = connection;
     }
 
-    public int insert(ShoppingList shoppingList, int userId) {
+    /**
+     * Inserts a Shopping List into the DB connected to the user
+     * @param shoppingList Shopping List user has been interacting with
+     * @param userId ID of the current user
+     * @return the status of the insert 0=fail otherwise number of rows affected
+     */
+    public int insert(ShoppingList shoppingList, int userId) 
+    {
         try 
         {
             PreparedStatement pStatement = connection.prepareStatement("INSERT INTO lists (userId, listName, titles, bodies, checkedIndex) VALUES (?, ?, ?, ?, ?);");
@@ -39,6 +53,10 @@ public class ShoppingListDao
         return 0;
     }
 
+    /**
+     * Gets all Shopping Lists from the DB
+     * @return List of all shopping lists
+     */
     public List<ShoppingList> getAll() 
     {
         List<ShoppingList> listOfShoppingLists = new ArrayList<>();
@@ -64,6 +82,11 @@ public class ShoppingListDao
         return listOfShoppingLists;
     }
 
+    /**
+     * Gets all Shopping Lists connected to the user
+     * @param user the User currently selected 
+     * @return List of all Shopping Lists connected to the user
+     */
     public List<ShoppingList> getAllFromUser(User user) 
     {
         List<ShoppingList> listOfShoppingLists = new ArrayList<>();
@@ -89,7 +112,13 @@ public class ShoppingListDao
         return listOfShoppingLists;
     } 
 
-    public int update(ShoppingList shoppingList) {
+    /**
+     * Updates the shopping list in the DB with the new data gathered from the program
+     * @param shoppingList current shopping list
+     * @return status of the query
+     */
+    public int update(ShoppingList shoppingList) 
+    {
         try 
         {
             PreparedStatement pStatement = connection.prepareStatement("UPDATE lists SET titles = ?, bodies = ?, checkedIndex = ? WHERE listName = ?;");
@@ -109,6 +138,11 @@ public class ShoppingListDao
         return 0;
     }
 
+    /**
+     * Deletes the shopping list from the DB
+     * @param shoppingList current shopping list
+     * @return status of the query
+     */
     public int delete(ShoppingList shoppingList) 
     {
         try 

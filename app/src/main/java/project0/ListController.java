@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * @author Max Lee
+ * @version 1.0
+ * 
+ * The controller that handles interactions between user and data
+ */
 public class ListController
 {
     private static Scanner input = new Scanner(System.in);
@@ -12,12 +18,21 @@ public class ListController
     private ShoppingListDao shoppingListDao;
     private UserDao userDao;
 
+    /**
+     * Constructs a controller that can interact with our postgresql DB
+     * 
+     * @param shoppingListDao the Data Access Object for shopping list
+     * @param userDao the Data Access Object for users
+     */
     public ListController(ShoppingListDao shoppingListDao, UserDao userDao)
     {
         this.shoppingListDao = shoppingListDao;
         this.userDao = userDao;
     }
 
+    /**
+     * Initial setup to get the user and list being interacted with this session
+     */
     public void initialSetup()
     {
         System.out.println();
@@ -26,6 +41,9 @@ public class ListController
         getList();
     }
 
+    /**
+     * Looks for all lists that are connected to the user
+     */
     private void getList()
     {
         List<ShoppingList> usersLists = shoppingListDao.getAllFromUser(user);
@@ -41,6 +59,9 @@ public class ListController
         }
     }
 
+    /**
+     * Creates a new list attached to the current user
+     */
     private void createNewList()
     {
         String newListName = "";
@@ -55,6 +76,11 @@ public class ListController
         shoppingListDao.insert(shoppingList, user.getUserID());
     }
 
+    /**
+     * Makes the user decide to interact with a list they made previously or create a new one
+     * 
+     * @param lists list of Shopping Lists connected to current user
+     */
     private void pickList(List<ShoppingList> lists)
     {
         System.out.println("Pick a list from below:");
@@ -62,9 +88,10 @@ public class ListController
         List<String> listNames = new ArrayList<>();
         for(ShoppingList list : lists)
         {
-            System.out.println(list.getListName());
+            System.out.println("- "+list.getListName());
             listNames.add(list.getListName());
         }
+        System.out.println("To create a new list type 'new'.");
         System.out.println();
 
         String pickedListName = "";
@@ -72,17 +99,27 @@ public class ListController
         {
             System.out.print("Pick your list by typing the name: ");
             pickedListName = input.nextLine();
-        }while(pickedListName.equals("") || !listNames.contains(pickedListName));
+        }while(!listNames.contains(pickedListName) && !pickedListName.equalsIgnoreCase("new"));
 
-        for(ShoppingList list : lists)
+        if(pickedListName.equalsIgnoreCase("new"))
         {
-            if(list.getListName().equals(pickedListName))
+            createNewList();
+        }
+        else
+        {
+            for(ShoppingList list : lists)
             {
-                shoppingList = list;
+                if(list.getListName().equals(pickedListName))
+                {
+                    shoppingList = list;
+                }
             }
         }
     }
 
+    /**
+     * Gets a user for interacting with later with their shopping lists
+     */
     private void getUser()
     {
         String existingUser = "";
@@ -104,6 +141,9 @@ public class ListController
         }
     }
 
+    /**
+     * Finds an existing user from the DB
+     */
     private void findExistingUser() 
     {
         User foundUser = null;
@@ -118,6 +158,9 @@ public class ListController
         user = foundUser;
     }
 
+    /**
+     * Lets user create a new user account in the DB
+     */
     private void createNewUser() 
     {
         int successfulInsert = 0;
@@ -135,6 +178,10 @@ public class ListController
         user = newUser;
     }
 
+    /**
+     * Displays the menu for interacting with the shopping list selected by the user earlier
+     * @return boolean if the program should keep running
+     */
     public boolean menu()
     {
         shoppingList.displayList();
@@ -162,6 +209,11 @@ public class ListController
         return processListRequest(menuSelection);
     }
 
+    /**
+     * Handles deciding what to do based on user input
+     * @param request request made by the user in menu()
+     * @return if the program should keep running
+     */
     private boolean processListRequest(int request)
     {
         switch(request)
@@ -196,6 +248,9 @@ public class ListController
         return true;
     }
 
+    /**
+     * Lets user add an item to their shopping list
+     */
     private void addItemToList()
     {
         String title = "";
@@ -216,6 +271,12 @@ public class ListController
         shoppingList.addItem(title, body);
     }
 
+    /**
+     * Handles getting the index of items to interact with for other methods
+     * 
+     * @param message changes the message the user sees when they pick an index
+     * @return the index the user chose
+     */
     private int getIndexFromUser(String message)
     {
         int index = 0;
@@ -230,6 +291,9 @@ public class ListController
         return index;
     }
 
+    /**
+     * Lets the user edit the title of the item they select
+     */
     private void editTitle()
     {
         int index = getIndexFromUser("edit");
@@ -241,6 +305,9 @@ public class ListController
         shoppingList.editItemTitle(index-1, newTitle);
     }
 
+    /**
+     * Lets the user edit the body of the item they select
+     */
     private void editBody()
     {
         int index = getIndexFromUser("edit");
@@ -252,6 +319,9 @@ public class ListController
         shoppingList.editItemBody(index-1, newBody);
     }
 
+    /**
+     * Lets the user delete the item they selected
+     */
     private void deleteItem()
     {
         int index = getIndexFromUser("delete");
@@ -259,6 +329,9 @@ public class ListController
         shoppingList.deleteItem(index-1);
     }
 
+    /**
+     * Lets the user check off the item they select
+     */
     private void checkOffItem()
     {
         int index = getIndexFromUser("check off");

@@ -7,6 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Max Lee
+ * @version 1.0
+ * 
+ * The Data Access Object for User
+ */
 public class UserDao 
 {
     private Connection connection;
@@ -16,6 +22,11 @@ public class UserDao
         this.connection = connection;
     }
 
+    /**
+     * Inserts the user into the DB
+     * @param user current user interacting
+     * @return status of the query
+     */
     public int insert(User user)
     {
         try 
@@ -39,6 +50,11 @@ public class UserDao
         return 0;
     }
 
+    /**
+     * Finds the user associated with their name
+     * @param userName name of the user
+     * @return the found User
+     */
     public User findUser(String userName)
     {
         User foundUser = null;
@@ -58,6 +74,10 @@ public class UserDao
         return foundUser;
     }
 
+    /**
+     * Gets all users in the DB
+     * @return List of all users in the DB
+     */
     public List<User> getAll()
     {
         List<User> users = new ArrayList<>();
@@ -78,6 +98,11 @@ public class UserDao
         return users;
     }
 
+    /**
+     * Updates the user with new data from the program
+     * @param user current user
+     * @return status of the query
+     */
     public int update(User user)
     {
         try 
@@ -95,6 +120,11 @@ public class UserDao
         return 0;
     }
 
+    /**
+     * Deletes the user from the DB
+     * @param user current user
+     * @return status of the query
+     */
     public int delete(User user)
     {
         try 

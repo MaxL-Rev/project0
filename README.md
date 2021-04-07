@@ -15,3 +15,5 @@ My project 0 where I am creating a shopping list application.
 - [ ] Delete a list from a user
 - [ ] Delete a user
 - [x] Errors logged to file and console
+- [ ] Clear a list once everything is bought
+- [ ] Error messages for user input

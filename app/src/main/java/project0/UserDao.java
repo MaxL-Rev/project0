@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,18 +32,19 @@ public class UserDao
     {
         try 
         {
-            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO users (userName) VALUES (?);");
+            PreparedStatement pStatement = connection.prepareStatement("INSERT INTO users (userName) VALUES (?);", Statement.RETURN_GENERATED_KEYS);
 
             pStatement.setString(1, user.getUserName());
 
-            int rowInsertedInto = pStatement.executeUpdate();
+            int rowsAffected = pStatement.executeUpdate();
             ResultSet rSet = pStatement.getGeneratedKeys();
+
             if(rSet.next())
             {
-                user.setUserID(rSet.getInt(1));
+                user.setUserID((int)rSet.getLong(1));
             }
             
-            return rowInsertedInto;
+            return rowsAffected;
         } 
         catch (SQLException e) {
             e.printStackTrace();
